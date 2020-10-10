@@ -8,19 +8,25 @@ import {
 } from "../../types/fastifyHelpers";
 import { prisma } from "..";
 
+const systemDetails = {
+  userId: 0,
+  username: "system",
+  email: "system@jankons.dev",
+};
+
 const registerBase: RegisterFunctionType = (server, opts, done) => {
   server.get("/generate", async (request, reply) => {
     // 1 off for system purposes only.
-    const systemUser: UserJwt = { userId: 0, userName: "system" };
-    await jwt.sign(
+    const systemUser: UserJwt = systemDetails;
+    return await jwt.sign(
       systemUser,
       serverEnv.ROOT_PRIVATE_KEY,
       { algorithm: serverEnv.JWT_ALGORITHM, noTimestamp: true },
       async function (err, token) {
         if (err) {
-          await reply.status(500).send();
+          return await reply.status(500).send();
         } else {
-          await reply.send(token);
+          return await reply.send({ token });
         }
       }
     );
@@ -61,12 +67,16 @@ const registerBase: RegisterFunctionType = (server, opts, done) => {
     },
     async (request, reply) => {
       // Root key to check against
-      const x = (await jwt.verify(
+      const rootJwt = (await jwt.verify(
         request.query.key,
         serverEnv.ROOT_PRIVATE_KEY
       )) as UserJwt;
-      if (x.userId !== 0 || x.userName !== "system") {
-        await reply.status(403).send();
+      if (
+        rootJwt.userId !== systemDetails.userId ||
+        rootJwt.username !== systemDetails.username ||
+        rootJwt.email !== systemDetails.email
+      ) {
+        return await reply.status(403).send();
       }
 
       // Generate password
@@ -84,7 +94,7 @@ const registerBase: RegisterFunctionType = (server, opts, done) => {
         },
       });
 
-      await reply.send(user);
+      return await reply.send(user);
     }
   );
 

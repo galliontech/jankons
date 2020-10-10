@@ -4,6 +4,7 @@ import makePromisesSafe from "make-promises-safe";
 import serverEnv from "./lib/envalid";
 import { PrismaClient } from '@prisma/client'
 import baseRoutes from './api/base';
+import userRoutes from './api/user';
 
 const server = fastify({
   logger: false
@@ -11,7 +12,8 @@ const server = fastify({
 
 export const prisma = new PrismaClient();
 
-server.register(baseRoutes)
+server.register(baseRoutes);
+server.register(userRoutes);
 
 server.listen(
   {

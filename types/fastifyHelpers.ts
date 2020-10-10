@@ -1,3 +1,4 @@
+import { User } from "@prisma/client";
 import {
   FastifyInstance,
   FastifyLoggerInstance,
@@ -21,9 +22,11 @@ export type RegisterFunctionType = (
 
 export interface UserJwt {
 	userId: number;
-	userName: string;
+	username: string;
+	email: string;
 }
 
 export interface Context {
-	jwt: UserJwt
+	jwt: UserJwt,
+	user: User,
 }

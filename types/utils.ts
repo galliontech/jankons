@@ -1,0 +1,1 @@
+export type Validate<T, U> = T extends U ? T : never; 

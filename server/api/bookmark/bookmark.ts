@@ -39,12 +39,12 @@ const registerBookmarkRoutes: RegisterFunctionType = (server, opts, done) => {
           isActive: true,
         },
         where: {
-					// TODO: consider semantics of whether we should upsert and make active (but return with
-					// incorrect name/tag) or if we should just disallow altogether
-          url: request.body.url, 
+          // TODO: consider semantics of whether we should upsert and make active (but return with
+          // incorrect name/tag) or if we should just disallow altogether
+          url: request.body.url,
         },
-			});
-			
+      });
+
       return reply.send(bm);
     }
   );

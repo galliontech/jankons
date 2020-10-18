@@ -78,7 +78,7 @@ const registerUserRoutes: RegisterFunctionType = (server, opts, done) => {
 
   server.post("/user/test", async (request, reply) => {
     // Simple test endpoint to check authentication
-    const user = await authenticate(request.headers.authorization as string);
+    const user = await authenticate(request.headers.authorization);
     return await reply.send({ message: "You are authenticated!", ...user.jwt });
   });
 

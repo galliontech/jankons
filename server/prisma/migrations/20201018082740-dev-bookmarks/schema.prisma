@@ -3,7 +3,7 @@
 
 datasource db {
   provider = "sqlite"
-  url      = env("DATABASE_URL")
+  url = "***"
 }
 
 generator client {
@@ -19,8 +19,6 @@ model User {
   username  String    @unique
   hash      String
 }
-
-// TODO: test with https://redash.io/ ;)
 
 // Bookmarks
 

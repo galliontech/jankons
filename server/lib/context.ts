@@ -4,10 +4,10 @@ import jwt from "jsonwebtoken";
 import serverEnv from "./envalid";
 
 // TODO: better errors and error handling
-export const authenticate = async (authHeader: string): Promise<Context> => {
+export const authenticate = async (authHeader?: string): Promise<Context> => {
 	// Take off bearer
 	let token;
-	if (authHeader.startsWith("Bearer ")){
+	if (authHeader && authHeader.startsWith("Bearer ")){
 		token = authHeader.substring(7, authHeader.length);
 	} else {
 		throw new Error("Invalid Bearer token");
